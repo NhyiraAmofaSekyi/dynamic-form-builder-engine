@@ -165,6 +165,16 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* brand accent — numeric stops, each backed by a real palette value */
+  --color-lagoon-400: var(--lagoon);
+  --color-lagoon-500: var(--lagoon-deep);
+  --color-lagoon-600: #246f76;
+
+  /* supporting palette — semantic, single-purpose */
+  --color-sea-ink: var(--sea-ink);
+  --color-sea-ink-soft: var(--sea-ink-soft);
+  --color-palm: var(--palm);
 }
 
 html,
