@@ -1,0 +1,18 @@
+# keep the build context small and avoid leaking local artifacts
+.git
+.gitignore
+*.md
+Dockerfile
+.dockerignore
+.env
+.env.*
+!.env.example
+bin/
+tmp/
+*.log
+# local tooling / editor
+.idea/
+.vscode/
+# test caches
+*.test
+coverage.out

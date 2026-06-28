@@ -1,0 +1,35 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./sql/queries"
+    schema: "./internal/db/migrations"
+    gen:
+      go:
+        package: "generated"
+        out: "./internal/db/generated"
+        sql_package: "pgx/v5"
+        emit_json_tags: true
+        emit_enum_valid_method: true
+        emit_pointers_for_null_types: true
+        emit_pointers_for_null_enum_types: true
+        overrides:
+          - db_type: "uuid"
+            go_type: "github.com/google/uuid.UUID"
+          - db_type: "uuid"
+            nullable: true
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
+              pointer: true
+          - db_type: "jsonb"
+            go_type: "encoding/json.RawMessage"
+          - db_type: "timestamptz"
+            go_type: "time.Time"
+              # nullable timestamptz -> *time.Time
+          - db_type: "timestamptz"
+            nullable: true
+            go_type:
+              import: "time"
+              type: "Time"
+              pointer: true
+

@@ -1,0 +1,68 @@
+services:
+  db:
+    image: postgres:18-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: form_builder
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # PG18 stores data in a versioned subdir — mount the PARENT, not /data.
+      - pgdata:/var/lib/postgresql
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d form_builder"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./dynamic-form-builder-engine
+    image: ghcr.io/nhyiraamofasekyi/dynamic-form-builder-engine:latest
+    restart: always
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/form_builder?sslmode=disable
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: "8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.api.rule=Host(`api-formbuilder.nhyiraamofasekyi.com`)"
+      - "traefik.http.routers.api.entrypoints=https"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.services.api.loadbalancer.server.port=8080"
+
+  web:
+    build:
+      context: ./dynamic-form-builder
+      args:
+        # Baked into the bundle at build time. Public URL, not a secret.
+        VITE_API_BASE_URL: https://api-formbuilder.nhyiraamofasekyi.com/api/v1
+    image: ghcr.io/nhyiraamofasekyi/dynamic-form-builder:latest
+    restart: always
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.web.rule=Host(`formbuilder.nhyiraamofasekyi.com`)"
+      - "traefik.http.routers.web.entrypoints=https"
+      - "traefik.http.routers.web.tls=true"
+      - "traefik.http.services.web.loadbalancer.server.port=80"
+
+volumes:
+  pgdata:
+
+networks:
+  internal:
+  traefik:
+    external: true
+    name: traefik
