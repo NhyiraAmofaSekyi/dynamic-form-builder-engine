@@ -22,6 +22,7 @@ func Compile(schemaJSON []byte) (*jsonschema.Schema, error) {
 		return nil, err
 	}
 	c := jsonschema.NewCompiler()
+	c.AssertFormat()
 	if err := c.AddResource("mem://schema", doc); err != nil {
 		return nil, err
 	}

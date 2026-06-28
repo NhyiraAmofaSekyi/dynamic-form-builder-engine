@@ -461,6 +461,43 @@ paths:
       summary: Create a new version of a form (becomes current)
       tags:
       - forms
+  /api/v1/forms/{id}/versions/{versionId}:
+    get:
+      parameters:
+      - description: Form ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Version ID
+        in: path
+        name: versionId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/forms.VersionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a specific version of a form by version ID
+      tags:
+      - forms
   /api/v1/forms/{id}/versions/current:
     get:
       parameters:
