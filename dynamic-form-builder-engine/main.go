@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	_ "github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/docs"
+	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/docs"
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/app"
 	config "github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/cfg"
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/db"
@@ -14,8 +14,6 @@ import (
 // @title           Dynamic Form Builder API
 // @version         1.0
 // @description     Configuration-driven form engine: define, validate, and store dynamic forms.
-// @host            localhost:8080
-
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
@@ -30,6 +28,10 @@ func main() {
 
 	if err := db.RunMigrations(cfg.DatabaseURL); err != nil {
 		log.Fatalf("migrations: %v", err)
+	}
+
+	if cfg.Host != "" {
+		docs.SwaggerInfo.Host = cfg.Host
 	}
 
 	a, err := app.New(ctx, cfg)

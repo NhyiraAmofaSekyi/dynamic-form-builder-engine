@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	Host        string
 	DatabaseURL string
 	Port        string
 	JWTSecret   string
@@ -17,17 +18,15 @@ type Config struct {
 // a .env file if present; in production the file is absent and values come
 // from injected env vars. A missing .env is NOT an error.
 func Load() (*Config, error) {
-	// optional: load .env if it exists (dev). Ignore "not found".
 	_ = godotenv.Load()
 
 	cfg := &Config{
+		Host:        getOr("HOST", "localhost:8080"),
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 		Port:        getOr("PORT", "8080"),
 		JWTSecret:   os.Getenv("JWT_SECRET"),
 	}
 
-	// fail fast on required secrets — better a clear startup error than a
-	// confusing nil-pointer mid-request.
 	if cfg.DatabaseURL == "" {
 		return nil, fmt.Errorf("DATABASE_URL is required")
 	}

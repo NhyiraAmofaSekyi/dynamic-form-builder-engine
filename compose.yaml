@@ -23,6 +23,7 @@ services:
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/form_builder?sslmode=disable
       JWT_SECRET: ${JWT_SECRET}
+      HOST: ${HOST}
       PORT: "8080"
     depends_on:
       db:
