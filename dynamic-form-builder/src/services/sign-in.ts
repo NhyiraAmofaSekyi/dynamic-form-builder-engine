@@ -1,4 +1,4 @@
-import { setToken, clearToken, , decodeToken } from "#/lib/auth";
+import { setToken, clearToken, decodeToken } from "#/lib/auth";
 import {apiClient, handleApiError} from "#/lib/axios.ts";
 
 export interface SignInRequest {
