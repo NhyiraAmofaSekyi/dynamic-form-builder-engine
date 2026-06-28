@@ -48,6 +48,7 @@ func New(a *app.App) *gin.Engine {
 	}))
 
 	allowedOrigins := []string{
+		"https://api-formbuilder.nhyiraamofasekyi.com",
 		"https://formbuilder.nhyiraamofasekyi.com",
 		"http://localhost:3000",
 		"http://localhost:5173",

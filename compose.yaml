@@ -32,7 +32,7 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=traefik_default"
       - "traefik.http.routers.api.rule=Host(`api-formbuilder.nhyiraamofasekyi.com`)"
       - "traefik.http.routers.api.entrypoints=https"
       - "traefik.http.routers.api.tls=true"
@@ -45,7 +45,7 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=traefik_default"
       - "traefik.http.routers.web.rule=Host(`formbuilder.nhyiraamofasekyi.com`)"
       - "traefik.http.routers.web.entrypoints=https"
       - "traefik.http.routers.web.tls=true"
