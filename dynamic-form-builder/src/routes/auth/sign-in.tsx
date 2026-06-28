@@ -4,7 +4,6 @@ import { Button, Form, Input, message } from 'antd'
 import {signIn} from "#/services/sign-in.ts";
 import {ApiError} from "#/lib/axios.ts";
 
-
 export const Route = createFileRoute('/auth/sign-in')({
   component: SignInPage,
 })
@@ -17,7 +16,6 @@ interface SignInValues {
 function SignInPage() {
   const navigate = useNavigate()
 
-  // Inline mutation — sign-in is the only caller, so no shared hook needed.
   const signInMutation = useMutation({
     mutationFn: signIn,
     onSuccess: () => navigate({ to: '/forms' }),
@@ -27,7 +25,7 @@ function SignInPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+      <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="mb-1 text-xl font-semibold text-gray-900">Sign in</h1>
         <p className="mb-6 text-sm text-gray-500">Welcome back. Enter your details.</p>
 

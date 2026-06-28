@@ -13,6 +13,8 @@ import appCss from '../styles.css?url'
 import {type QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {queryClient} from "#/lib/queryClient.tsx";
 import {Toaster} from "sonner";
+import {ConfigProvider} from "antd";
+import {antdTheme} from "#/lib/antd-theme.ts";
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -49,7 +51,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-      <QueryClientProvider client={queryClient}>
+      <ConfigProvider
+        theme={antdTheme}
+      >
+
+        <QueryClientProvider client={queryClient}>
 
       {children}
         <TanStackDevtools
@@ -66,6 +72,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         />
         <Scripts />
         </QueryClientProvider>
+      </ConfigProvider>
+
       <Toaster position={'top-right'} />
 
 

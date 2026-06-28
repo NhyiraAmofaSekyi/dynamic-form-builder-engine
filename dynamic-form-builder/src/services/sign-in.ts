@@ -51,7 +51,7 @@ export function signOut(): void {
 // currentClaims returns the decoded claims of the stored token, or null.
 export function currentClaims(): TokenClaims | null {
   const token = getToken();
-  return token ? decodeToken(token) : null;
+  return token ? decodeToken() : null;
 }
 
 // currentRole returns the role from the stored token ('admin' | 'user'), or null.

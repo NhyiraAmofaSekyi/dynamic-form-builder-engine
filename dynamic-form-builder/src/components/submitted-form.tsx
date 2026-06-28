@@ -34,7 +34,6 @@ export function SubmittedForm({ version, answers }: SubmittedFormProps) {
 
   return (
     <div>
-      {/* provenance: which exact version produced this submission */}
       <div className="mb-6 rounded-lg bg-gray-50 p-4">
         <div className="flex items-center justify-between gap-3">
           <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
