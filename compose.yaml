@@ -46,7 +46,7 @@ services:
       args:
         # Baked into the bundle at build time. Public URL, not a secret.
         VITE_API_BASE_URL: https://api-formbuilder.nhyiraamofasekyi.com/api/v1
-    image: ghcr.io/nhyiraamofasekyi/dynamic-form-builder:latest
+    image: ghcr.io/nhyiraamofasekyi/dynamic-form-builder-client:latest
     restart: always
     networks:
       - traefik

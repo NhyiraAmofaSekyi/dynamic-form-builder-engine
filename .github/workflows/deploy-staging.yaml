@@ -103,6 +103,20 @@ jobs:
             --query "StandardOutputContent" \
             --output text
 
+      - name: Deploy to EC2 via SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids ${{ secrets.EC2_INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --parameters 'commands=[
+              "cd /opt/dynamic-form-builder",
+              "echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin",
+              "docker compose pull",
+              "docker compose up -d --force-recreate",
+              "docker compose ps",
+              "docker system prune -af"
+            ]' \
+            --region af-south-1
       #      - name: Deploy to EC2
       #        run: |
       #          # Extract first tag from metadata JSON
