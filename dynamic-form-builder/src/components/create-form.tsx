@@ -13,6 +13,14 @@ import type {FormFieldBuilder} from "#/types/fields.ts";
 import type {FormSchema} from "#/types/schema.ts";
 import type {BuilderItem} from "#/types/builder.ts";
 import {fieldsToSchema} from "#/services/fields.ts";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "#/components/ui/drawer.tsx";
 
 type FieldType = FormFieldBuilder["type"];
 
@@ -132,15 +140,54 @@ export function Builder({
     if (onSave) onSave(schema);
     else console.log("Generated schema:", JSON.stringify(schema, null, 2));
   };
+  const previewContent = (
+    <div className="rounded-lg border-gray-100 bg-white p-6 shadow-2xs">
+      {hasFields ? (
+        <DynamicForm
+          form={form}
+          schema={schema}
+          onSubmit={(data) => console.log("submit:", data)}
+        />
+      ) : (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <Clipboard strokeWidth={0.8} className="mb-4 h-12 w-12 text-gray-300" />
+          <p className="mt-1 text-sm text-gray-300">Add a field to preview the form.</p>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="flex h-full bg-gray-50">
       {/* ---------------- LEFT: BUILDER ---------------- */}
-      <div className="w-1/2 border-r border-gray-100 bg-white p-6 overflow-y-auto">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Builder</h2>
-          <p className="text-sm text-gray-500">Create and manage form fields.</p>
+      <div className="w-full lg:w-1/2 border-r border-gray-100 bg-white p-6 overflow-y-auto">
+        <div className="mb-6 flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">Builder</h2>
+            <p className="text-sm text-gray-500">Create and manage form fields.</p>
+          </div>
+
+          {/* MOBILE-ONLY: preview trigger — hidden on desktop */}
+          <div className="mt-4 lg:hidden">
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button type="link" icon={<Clipboard className="h-4 w-4" />} disabled={!hasFields}>
+                  Preview form
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <DrawerHeader>
+                  <DrawerTitle>Preview</DrawerTitle>
+                  <DrawerDescription>
+                    How the form will be presented to users.
+                  </DrawerDescription>
+                </DrawerHeader>
+                <div className="overflow-y-auto px-4 pb-8">{previewContent}</div>
+              </DrawerContent>
+            </Drawer>
+          </div>
         </div>
+
 
         <div className="flex flex-col gap-4">
           {items.map((item, idx) => (
@@ -197,10 +244,16 @@ export function Builder({
             Clear
           </Button>
         </div>
+
+
+
       </div>
 
+
+
+
       {/* ---------------- RIGHT: PREVIEW ---------------- */}
-      <div className="w-1/2 p-6 overflow-y-auto bg-gray-50">
+      <div className="hidden lg:block lg:w-1/2 p-6 overflow-y-auto bg-gray-50">
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-900">Preview</h2>
           <p className="text-sm text-gray-500">
@@ -208,16 +261,18 @@ export function Builder({
           </p>
         </div>
 
-        <div className="rounded-lg  border-gray-100 bg-white p-6 shadow-2xs">
-          {hasFields ? (
-            <DynamicForm form={form} schema={schema} onSubmit={(data) => console.log("submit:", data)} />
-          ) : (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Clipboard strokeWidth={0.8} className="mb-4 h-12 w-12 text-gray-300" />
-              <p className="mt-1 text-sm text-gray-300">Add a field to preview the form.</p>
-            </div>
-          )}
-        </div>
+        {/*<div className=" rounded-lg  border-gray-100 bg-white p-6 shadow-2xs">*/}
+        {/*  {hasFields ? (*/}
+        {/*    <DynamicForm form={form} schema={schema} onSubmit={(data) => console.log("submit:", data)} />*/}
+        {/*  ) : (*/}
+        {/*    <div className="flex flex-col items-center justify-center py-12 text-center">*/}
+        {/*      <Clipboard strokeWidth={0.8} className="mb-4 h-12 w-12 text-gray-300" />*/}
+        {/*      <p className="mt-1 text-sm text-gray-300">Add a field to preview the form.</p>*/}
+        {/*    </div>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+        {previewContent}
+
       </div>
     </div>
   );
