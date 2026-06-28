@@ -53,8 +53,8 @@ jobs:
           file: ./dynamic-form-builder/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ env.OWNER_LOWER }}/dynamic-form-builder-client:latest
-            ghcr.io/${{ env.OWNER_LOWER }}/dynamic-form-builder-client:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/dynamic-form-builder-client:latest
+            ghcr.io/${{ env.OWNER }}/dynamic-form-builder-client:${{ github.sha }}
 
       # =========================
       # ENGINE (Backend)
@@ -66,8 +66,8 @@ jobs:
           file: ./dynamic-form-builder-engine/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ env.OWNER_LOWER }}/dynamic-form-builder-engine:latest
-            ghcr.io/${{ env.OWNER_LOWER }}/dynamic-form-builder-engine:${{ github.sha }}
+            ghcr.io/${{ env.OWNER }}/dynamic-form-builder-engine:latest
+            ghcr.io/${{ env.OWNER }}/dynamic-form-builder-engine:${{ github.sha }}
 
       # =========================
       # AWS AUTH (OIDC)
