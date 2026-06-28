@@ -5,7 +5,7 @@ import type { ColumnsType } from 'antd/es/table'
 import type { Form } from '#/types/schema'
 import { ApiError } from '#/lib/axios.ts'
 import { listForms } from '#/services/form.ts'
-import { ExternalLink } from 'lucide-react'
+import {ClipboardPlus, ExternalLink} from 'lucide-react'
 
 export const Route = createFileRoute('/_protected/forms/')({
   component: FormsPage,
@@ -97,7 +97,7 @@ function FormsPage() {
     <div className="p-8">
       <div className="mb-6 flex items-center justify-between border-b border-gray-200 pb-4">
         <h1 className="text-3xl font-bold text-sea-ink">Your Forms</h1>
-        <Button type="primary" onClick={() => navigate({ to: '/forms/create' })}>
+        <Button type="primary" icon={<ClipboardPlus size={15} strokeWidth={1.5} />} onClick={() => navigate({ to: '/forms/create' })}>
           New form
         </Button>
       </div>
