@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Button>
           <AppBreadcrumb />
         </header>
-        <div>
+        <div className="min-w-0 overflow-x-auto">
           {children}
         </div>
       </SidebarInset>
