@@ -18,8 +18,6 @@ services:
       retries: 10
 
   api:
-    build:
-      context: ./dynamic-form-builder-engine
     image: ghcr.io/nhyiraamofasekyi/dynamic-form-builder-engine:latest
     restart: always
     environment:
@@ -41,11 +39,6 @@ services:
       - "traefik.http.services.api.loadbalancer.server.port=8080"
 
   web:
-    build:
-      context: ./dynamic-form-builder
-      args:
-        # Baked into the bundle at build time. Public URL, not a secret.
-        VITE_API_BASE_URL: https://api-formbuilder.nhyiraamofasekyi.com/api/v1
     image: ghcr.io/nhyiraamofasekyi/dynamic-form-builder-client:latest
     restart: always
     networks:
