@@ -78,3 +78,12 @@ export interface Submission {
   submittedBy?: string | null
   createdAt: string
 }
+
+
+export interface Version {
+  id: string
+  formId: string
+  schemaJson: FormSchema
+  changeSummary?: string
+  createdAt: string
+}

@@ -5,7 +5,7 @@ import type {FieldSchema, FieldValue, FormSchema, Response} from "#/types/schema
 
 
 // ---- 1. Widget inference fallback (used only when x-widget is absent) ----
-function inferWidget(prop: FieldSchema): string {
+export function inferWidget(prop: FieldSchema): string {
   if (prop.enum) return 'select'
   if (prop.format === 'date') return 'date'
   if (prop.type === 'number' || prop.type === 'integer') return 'number'
@@ -14,7 +14,7 @@ function inferWidget(prop: FieldSchema): string {
 
 // ---- 2. THE WIDGET MAPPER — the heart of the renderer --------------------
 // Add new field types here: one case per x-widget value.
-function renderWidget(prop: FieldSchema) {
+export function renderWidget(prop: FieldSchema) {
   const widget = prop['x-widget'] ?? inferWidget(prop)
   switch (widget) {
     case 'textarea':
@@ -54,17 +54,6 @@ function renderWidget(prop: FieldSchema) {
     />
 
     case 'radio':
-      // return (
-      //   <Radio.Group
-      //     value={true}
-      //     options={
-      //       prop["x-options"] ?? [
-      //         { value: true, label: "True" },
-      //         { value: false, label: "False" },
-      //       ]
-      //     }
-      //   />
-      // );
       return <Radio.Group options={prop['x-options']} />
 
     case 'text':
@@ -158,19 +147,6 @@ export function DynamicForm({
   const order = schema['x-order'] ?? Object.keys(schema.properties)
   const required = schema.required ?? []
 
-  // const handleFinish = (values: Record<string, unknown>) => {
-  //   const out = { ...values }
-  //   // DatePicker yields a dayjs object; the schema wants a "YYYY-MM-DD" string.
-  //   for (const name of order) {
-  //     const prop = schema.properties[name]
-  //
-  //     const widget = prop?.['x-widget'] ?? (prop ? inferWidget(prop) : '')
-  //     if (widget === 'date' && out[name]) {
-  //       out[name] = (out[name] as dayjs.Dayjs).format('YYYY-MM-DD')
-  //     }
-  //   }
-  //   onSubmit(out)
-  // }
   const handleFinish = (values: Record<string, unknown>) => {
     const response: Response = {};
 

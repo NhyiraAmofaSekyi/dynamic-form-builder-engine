@@ -21,7 +21,8 @@ import { Route as ProtectedResponsesIndexRouteImport } from './routes/_protected
 import { Route as ProtectedFormsIndexRouteImport } from './routes/_protected/forms/index'
 import { Route as ProtectedFormsCreateRouteImport } from './routes/_protected/forms/create'
 import { Route as ProtectedFormsIdIndexRouteImport } from './routes/_protected/forms/$id/index'
-import { Route as ProtectedFormsIdResponsesRouteImport } from './routes/_protected/forms/$id/responses'
+import { Route as ProtectedFormsIdResponsesIndexRouteImport } from './routes/_protected/forms/$id/responses/index'
+import { Route as ProtectedFormsIdResponsesSubmissionIdRouteImport } from './routes/_protected/forms/$id/responses/$submissionId'
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
@@ -82,10 +83,16 @@ const ProtectedFormsIdIndexRoute = ProtectedFormsIdIndexRouteImport.update({
   path: '/forms/$id/',
   getParentRoute: () => ProtectedRoute,
 } as any)
-const ProtectedFormsIdResponsesRoute =
-  ProtectedFormsIdResponsesRouteImport.update({
-    id: '/forms/$id/responses',
-    path: '/forms/$id/responses',
+const ProtectedFormsIdResponsesIndexRoute =
+  ProtectedFormsIdResponsesIndexRouteImport.update({
+    id: '/forms/$id/responses/',
+    path: '/forms/$id/responses/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedFormsIdResponsesSubmissionIdRoute =
+  ProtectedFormsIdResponsesSubmissionIdRouteImport.update({
+    id: '/forms/$id/responses/$submissionId',
+    path: '/forms/$id/responses/$submissionId',
     getParentRoute: () => ProtectedRoute,
   } as any)
 
@@ -100,8 +107,9 @@ export interface FileRoutesByFullPath {
   '/forms/create': typeof ProtectedFormsCreateRoute
   '/forms/': typeof ProtectedFormsIndexRoute
   '/responses/': typeof ProtectedResponsesIndexRoute
-  '/forms/$id/responses': typeof ProtectedFormsIdResponsesRoute
   '/forms/$id/': typeof ProtectedFormsIdIndexRoute
+  '/forms/$id/responses/$submissionId': typeof ProtectedFormsIdResponsesSubmissionIdRoute
+  '/forms/$id/responses/': typeof ProtectedFormsIdResponsesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -114,8 +122,9 @@ export interface FileRoutesByTo {
   '/forms/create': typeof ProtectedFormsCreateRoute
   '/forms': typeof ProtectedFormsIndexRoute
   '/responses': typeof ProtectedResponsesIndexRoute
-  '/forms/$id/responses': typeof ProtectedFormsIdResponsesRoute
   '/forms/$id': typeof ProtectedFormsIdIndexRoute
+  '/forms/$id/responses/$submissionId': typeof ProtectedFormsIdResponsesSubmissionIdRoute
+  '/forms/$id/responses': typeof ProtectedFormsIdResponsesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -130,8 +139,9 @@ export interface FileRoutesById {
   '/_protected/forms/create': typeof ProtectedFormsCreateRoute
   '/_protected/forms/': typeof ProtectedFormsIndexRoute
   '/_protected/responses/': typeof ProtectedResponsesIndexRoute
-  '/_protected/forms/$id/responses': typeof ProtectedFormsIdResponsesRoute
   '/_protected/forms/$id/': typeof ProtectedFormsIdIndexRoute
+  '/_protected/forms/$id/responses/$submissionId': typeof ProtectedFormsIdResponsesSubmissionIdRoute
+  '/_protected/forms/$id/responses/': typeof ProtectedFormsIdResponsesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,8 +156,9 @@ export interface FileRouteTypes {
     | '/forms/create'
     | '/forms/'
     | '/responses/'
-    | '/forms/$id/responses'
     | '/forms/$id/'
+    | '/forms/$id/responses/$submissionId'
+    | '/forms/$id/responses/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -160,8 +171,9 @@ export interface FileRouteTypes {
     | '/forms/create'
     | '/forms'
     | '/responses'
-    | '/forms/$id/responses'
     | '/forms/$id'
+    | '/forms/$id/responses/$submissionId'
+    | '/forms/$id/responses'
   id:
     | '__root__'
     | '/'
@@ -175,8 +187,9 @@ export interface FileRouteTypes {
     | '/_protected/forms/create'
     | '/_protected/forms/'
     | '/_protected/responses/'
-    | '/_protected/forms/$id/responses'
     | '/_protected/forms/$id/'
+    | '/_protected/forms/$id/responses/$submissionId'
+    | '/_protected/forms/$id/responses/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -276,11 +289,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedFormsIdIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/forms/$id/responses': {
-      id: '/_protected/forms/$id/responses'
+    '/_protected/forms/$id/responses/': {
+      id: '/_protected/forms/$id/responses/'
       path: '/forms/$id/responses'
-      fullPath: '/forms/$id/responses'
-      preLoaderRoute: typeof ProtectedFormsIdResponsesRouteImport
+      fullPath: '/forms/$id/responses/'
+      preLoaderRoute: typeof ProtectedFormsIdResponsesIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/forms/$id/responses/$submissionId': {
+      id: '/_protected/forms/$id/responses/$submissionId'
+      path: '/forms/$id/responses/$submissionId'
+      fullPath: '/forms/$id/responses/$submissionId'
+      preLoaderRoute: typeof ProtectedFormsIdResponsesSubmissionIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
   }
@@ -290,16 +310,19 @@ interface ProtectedRouteChildren {
   ProtectedFormsCreateRoute: typeof ProtectedFormsCreateRoute
   ProtectedFormsIndexRoute: typeof ProtectedFormsIndexRoute
   ProtectedResponsesIndexRoute: typeof ProtectedResponsesIndexRoute
-  ProtectedFormsIdResponsesRoute: typeof ProtectedFormsIdResponsesRoute
   ProtectedFormsIdIndexRoute: typeof ProtectedFormsIdIndexRoute
+  ProtectedFormsIdResponsesSubmissionIdRoute: typeof ProtectedFormsIdResponsesSubmissionIdRoute
+  ProtectedFormsIdResponsesIndexRoute: typeof ProtectedFormsIdResponsesIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedFormsCreateRoute: ProtectedFormsCreateRoute,
   ProtectedFormsIndexRoute: ProtectedFormsIndexRoute,
   ProtectedResponsesIndexRoute: ProtectedResponsesIndexRoute,
-  ProtectedFormsIdResponsesRoute: ProtectedFormsIdResponsesRoute,
   ProtectedFormsIdIndexRoute: ProtectedFormsIdIndexRoute,
+  ProtectedFormsIdResponsesSubmissionIdRoute:
+    ProtectedFormsIdResponsesSubmissionIdRoute,
+  ProtectedFormsIdResponsesIndexRoute: ProtectedFormsIdResponsesIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

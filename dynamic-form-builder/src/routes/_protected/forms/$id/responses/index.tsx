@@ -1,15 +1,14 @@
-import { createFileRoute, useNavigate, useParams } from '@tanstack/react-router'
+import {createFileRoute, Link, useNavigate, useParams} from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { Table, Button, Alert, Empty, Spin, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { getForm, getCurrentVersion, listSubmissions } from '#/services/form.ts'
-import type { Submission } from '#/services/form.ts'
-import type { FormSchema, FieldValue } from '#/types/schema'
+import type {FormSchema, FieldValue , Submission} from '#/types/schema'
 import { ApiError } from '#/lib/axios.ts'
 
-export const Route = createFileRoute('/_protected/forms/$id/responses')({
-  component: ResponsesPage,
+export const Route = createFileRoute('/_protected/forms/$id/responses/')({
+  component: ResponsesPage
 })
 
 const PAGE_SIZE = 20
@@ -23,7 +22,7 @@ function formatValue(v: FieldValue | undefined): React.ReactNode {
 }
 
 function ResponsesPage() {
-  const { id } = useParams({ from: '/_protected/forms/$id/responses' })
+  const { id } = useParams({ from: '/_protected/forms/$id/responses/' })
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
 
@@ -64,6 +63,16 @@ function ResponsesPage() {
         width: 110,
         render: (_, row) =>
           row.submittedBy ? <Tag>user</Tag> : <Tag color="default">anonymous</Tag>,
+      },
+      {
+        title: '',
+        key: 'actions',
+        width: 80,
+        render: (_, row) => (
+          <Link to="/forms/$id/responses/$submissionId" params={{ id, submissionId: row.id }}>
+            View
+          </Link>
+        ),
       },
     ]
   }, [versionQuery.data])

@@ -116,3 +116,31 @@ export async function listSubmissions(
   }
 }
 
+
+export async function getVersion(
+  formId: string,
+  versionId: string,
+): Promise<Version> {
+  try {
+    const { data } = await apiClient.get<Version>(
+      `${BASE}/${formId}/versions/${versionId}`,
+    )
+    return data
+  } catch (err) {
+    handleApiError(err, 'Could not load form version')
+  }
+}
+
+export async function getSubmission(
+  formId: string,
+  submissionId: string,
+): Promise<Submission> {
+  try {
+    const { data } = await apiClient.get<Submission>(
+      `${BASE}/${formId}/submissions/${submissionId}`,
+    )
+    return data
+  } catch (err) {
+    handleApiError(err, 'Could not load response')
+  }
+}
