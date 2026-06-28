@@ -1,6 +1,9 @@
 package server
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/app"
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/forms"
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/http/auth"
@@ -11,8 +14,6 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"net/http"
-	"time"
 
 	scalar "github.com/MarceloPetrucio/go-scalar-api-reference"
 	"github.com/gin-contrib/cors"
@@ -47,6 +48,7 @@ func New(a *app.App) *gin.Engine {
 	}))
 
 	allowedOrigins := []string{
+		"formbuilder.nhyiraamofasekyi.com",
 		"http://localhost:3000",
 		"http://localhost:5173",
 		"https://yourdomain.com",
