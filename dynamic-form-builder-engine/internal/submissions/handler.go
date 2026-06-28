@@ -41,7 +41,6 @@ func (h *Handler) RegisterProtectedRoutes(r *gin.RouterGroup) {
 // ---- DTOs ------------------------------------------------------------------
 
 // PublicFormResponse is the MINIMAL render payload — only what an anonymous
-// filler needs. Deliberately omits user_id, submissions, and other versions.
 type PublicFormResponse struct {
 	ID          uuid.UUID       `json:"id"`
 	Name        string          `json:"name"`
