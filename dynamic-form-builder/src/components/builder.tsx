@@ -21,6 +21,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "#/components/ui/drawer.tsx";
+import {toast} from "sonner";
 
 type FieldType = FormFieldBuilder["type"];
 
@@ -79,6 +80,47 @@ type BuilderProps = {
   saving?: boolean;
 };
 
+type FieldError = { name?: string; options?: string }
+
+function validateItems(items: BuilderItem[]): Record<string, FieldError> {
+  const errors: Record<string, FieldError> = {}
+  const seenNames = new Set<string>()
+
+  for (const { id, field } of items) {
+    const e: FieldError = {}
+
+    // every field needs a name (it becomes the schema property key)
+    const name = field.name?.trim()
+    if (!name) {
+      e.name = 'Field name is required'
+    } else if (seenNames.has(name)) {
+      e.name = 'Field name must be unique'
+    } else {
+      seenNames.add(name)
+    }
+
+    // select / multiselect need at least one option
+    // select / multiselect need at least one NON-EMPTY option
+    if (field.type === 'select' || field.type === 'multiselect') {
+      const opts = field.options ?? []
+
+      const isBlank = (o: typeof opts[number]) => {
+        const val = typeof o === 'string' ? o : o?.value
+        return val == null || String(val).trim() === ''
+      }
+
+      if (opts.length === 0) {
+        e.options = 'Add at least one option'
+      } else if (opts.some(isBlank)) {
+        e.options = 'Options cannot be blank'
+      }
+    }
+
+    if (Object.keys(e).length) errors[id] = e
+  }
+  return errors
+}
+
 export function Builder({
                           initialFields = [],
                           onSave,
@@ -135,8 +177,22 @@ export function Builder({
       }
     }
   };
+  const errors = validateItems(items)
+  const isValid = items.length > 0 && Object.keys(errors).length === 0
 
-  const handleSave = () => {
+    const handleSave = () => {
+      if (!isValid) {
+        const messages = Object.values(errors)
+          .flatMap((e) => [e.name, e.options])
+          .filter(Boolean)
+
+        toast.error('Cannot save form', {
+          description: messages.length
+            ? messages.join('\n')
+            : 'Add at least one field.',
+        })
+        return
+      }
     if (onSave) onSave(schema);
     else console.log("Generated schema:", JSON.stringify(schema, null, 2));
   };

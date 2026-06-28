@@ -1,13 +1,14 @@
 import { createFileRoute, useNavigate, useParams } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { Button, Spin, Alert, message } from 'antd'
-import { Builder } from '#/components/create-form.tsx'
+import { Button, Spin, Alert } from 'antd'
+import { Builder } from '#/components/builder.tsx'
 
 import type { FormSchema } from '#/types/schema'
 import {ApiError} from "#/lib/axios.ts";
 import {schemaToFields} from "#/services/fields.ts";
 import {createVersion, getCurrentVersion, getForm} from "#/services/form.ts";
+import {toast} from "sonner";
 
 export const Route = createFileRoute('/_protected/forms/$id/')({
   component: RouteComponent,
@@ -41,10 +42,10 @@ function RouteComponent() {
       // the current version changed — refresh both queries.
       queryClient.invalidateQueries({ queryKey: ['forms', id] })
       queryClient.invalidateQueries({ queryKey: ['forms', id, 'current-version'] })
-      message.success('New version saved')
+      toast.success('New version saved')
     },
     onError: (err) =>
-      message.error(err instanceof ApiError ? err.message : 'Could not save changes'),
+      toast.error(err instanceof ApiError ? err.message : 'Could not save changes'),
   })
 
   const isLoading = formQuery.isPending || versionQuery.isPending

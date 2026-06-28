@@ -4,7 +4,7 @@ import { Alert, Button, Spin, message } from "antd";
 import { useExampleSchema, useUpdateSchema } from "#/hooks/example.ts";
 import type { FormSchema } from "#/types/schema.ts";
 import {schemaToFields} from "#/services/fields.ts";
-import {Builder} from "#/components/create-form.tsx";
+import {Builder} from "#/components/builder.tsx";
 
 export const Route = createFileRoute("/test/edit")({
   component: RouteComponent,

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Input, message } from 'antd'
-import { Builder } from '#/components/create-form.tsx'
+import { Builder } from '#/components/builder.tsx'
 import type { FormSchema } from '#/types/schema'
 import {createForm} from "#/services/form.ts";
 import {ApiError} from "#/lib/axios.ts";
