@@ -13,16 +13,17 @@ import {
   SidebarRail,
 } from "#/components/ui/sidebar.tsx"
 import { Link, useLocation } from "@tanstack/react-router"
+import {FileText, Plus} from "lucide-react";
 
 // Sidebar navigation data. URLs are ABSOLUTE (leading slash) so they resolve
 // from the router root, not relative to the current path.
 const data = {
   navMain: [
     {
-      title: "Architecture",
+      title: "Workspace",
       items: [
-        { title: "Forms", url: "/forms" },
-        { title: "Responses", url: "/responses" },
+        { title: "Forms", url: "/forms", icon: FileText },
+        { title: "New form", url: "/forms/create", icon: Plus },
       ],
     },
   ],

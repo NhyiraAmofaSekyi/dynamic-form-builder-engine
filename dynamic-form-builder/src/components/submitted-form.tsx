@@ -39,7 +39,7 @@ export function SubmittedForm({ version, answers }: SubmittedFormProps) {
           <span className="text-xs font-medium uppercase tracking-wide text-gray-500">
             Submitted against version
           </span>
-          <code className="rounded bg-gray-200 px-2 py-0.5 font-mono text-xs text-gray-700">
+          <code className="rounded-md border-0 bg-[rgba(79,184,178,0.1)] px-2 py-0.5 font-mono text-[8px] text-[#328f97]">
             {version.id.slice(0, 8)}
           </code>
         </div>

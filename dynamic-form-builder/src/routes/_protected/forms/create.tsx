@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { Input, Button, message } from 'antd'
+import { Input, message } from 'antd'
 import { Builder } from '#/components/create-form.tsx'
 import type { FormSchema } from '#/types/schema'
 import {createForm} from "#/services/form.ts";
@@ -47,7 +47,6 @@ function RouteComponent() {
     <div className="flex h-screen flex-col bg-gray-50">
       <div className="border-b border-gray-100 bg-white px-6 py-4">
         <div className="flex items-center gap-4">
-          <Button onClick={() => navigate({ to: '/forms' })}>← Back</Button>
           <Input
             size="large"
             placeholder="Form name"

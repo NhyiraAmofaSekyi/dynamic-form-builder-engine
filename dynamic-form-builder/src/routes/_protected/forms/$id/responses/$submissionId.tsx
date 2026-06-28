@@ -1,6 +1,6 @@
-import { createFileRoute, useParams, Link } from '@tanstack/react-router'
+import { createFileRoute, useParams } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { Spin, Alert, Button } from 'antd'
+import { Spin, Alert } from 'antd'
 import {getSubmission, getVersion} from "#/services/form.ts";
 import {SubmittedForm} from "#/components/submitted-form.tsx";
 
@@ -34,9 +34,6 @@ function RouteComponent() {
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto' }}>
-      <Link to="/forms/$id/responses" params={{ id }}>
-        <Button type="link" style={{ paddingLeft: 0 }}>← Back to responses</Button>
-      </Link>
 
       <SubmittedForm
         version={version.data}

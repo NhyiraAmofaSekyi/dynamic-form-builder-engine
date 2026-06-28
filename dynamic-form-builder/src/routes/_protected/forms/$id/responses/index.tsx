@@ -1,7 +1,7 @@
-import {createFileRoute, Link, useNavigate, useParams} from '@tanstack/react-router'
+import {createFileRoute, Link, useParams} from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
-import { Table, Button, Alert, Empty, Spin, Tag } from 'antd'
+import { Table, Alert, Empty, Spin, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { getForm, getCurrentVersion, listSubmissions } from '#/services/form.ts'
 import type {FormSchema, FieldValue , Submission} from '#/types/schema'
@@ -23,7 +23,6 @@ function formatValue(v: FieldValue | undefined): React.ReactNode {
 
 function ResponsesPage() {
   const { id } = useParams({ from: '/_protected/forms/$id/responses/' })
-  const navigate = useNavigate()
   const [page, setPage] = useState(1)
 
   // form (name) + its current version (to know which columns to show)
@@ -94,7 +93,6 @@ function ResponsesPage() {
   return (
     <div className="p-8">
       <div className="mb-6 flex items-center gap-4">
-        <Button onClick={() => navigate({ to: '/forms' })}>← Back</Button>
         <div>
           <h1 className="text-2xl font-semibold">{formQuery.data?.name}</h1>
           <p className="text-sm text-gray-500">

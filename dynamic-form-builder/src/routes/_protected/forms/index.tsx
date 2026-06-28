@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import {Table, Button, Alert, Empty, Tag, Space} from 'antd'
+import {Table, Button, Alert, Empty, Space} from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import type { Form } from '#/types/schema'
 import {ApiError} from "#/lib/axios.ts";
@@ -19,6 +19,8 @@ function FormsPage() {
     queryFn: () => listForms(),
   })
 
+  console.log(JSON.stringify(data, null, 2))
+
   const columns: ColumnsType<Form> = [
     {
       title: 'Name',
@@ -32,18 +34,23 @@ function FormsPage() {
       title: 'Slug',
       dataIndex: 'slug',
       key: 'slug',
-      render: (slug: string) => (
-        <code className="rounded-md  bg-[rgba(79,184,178,0.1)] px-2 py-0.5 font-mono text-xs text-[#328f97]">
-          {slug}
-        </code>
-      ),
+      render: (slug?: string) =>
+        slug?.trim() ? (
+          <code className="rounded-md border-0 bg-[rgba(79,184,178,0.1)] px-2 py-0.5 font-mono text-xs text-[#328f97]">
+            {slug}
+          </code>
+        ) : (
+          <span className="text-[rgba(23,58,64,0.35)]">—</span>
+        ),
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      render: (d?: string) =>
-        d || <span className="text-[rgba(23,58,64,0.35)]">—</span>,
+      render: (d?: string) => {
+        console.log('description value:', JSON.stringify(d))
+        return d?.trim() ? d : <span className="text-[rgba(23,58,64,0.35)]">—</span>
+      },
     },
     {
       title: 'Version',
@@ -107,7 +114,7 @@ function FormsPage() {
   ]
   return (
     <div className="p-8">
-      <div className="mb-6 pb-4 flex items-center justify-between border-b border-gray-200= ">
+      <div className="mb-6 pb-4 flex items-center justify-between border-b border-gray-200 ">
         <h1 className="text-3xl font-bold">Your Forms</h1>
         <Button type="primary" onClick={() => navigate({ to: '/forms/create' })}>
           New form

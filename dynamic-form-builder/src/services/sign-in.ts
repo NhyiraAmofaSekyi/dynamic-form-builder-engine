@@ -1,5 +1,4 @@
-import { setToken, clearToken, getToken, decodeToken } from "#/lib/auth";
-import type { TokenClaims } from "#/lib/auth";
+import { setToken, clearToken, , decodeToken } from "#/lib/auth";
 import {apiClient, handleApiError} from "#/lib/axios.ts";
 
 export interface SignInRequest {
@@ -46,19 +45,18 @@ export function signOut(): void {
   clearToken();
 }
 
-// ---- decode / role helpers -------------------------------------------------
 
 // currentClaims returns the decoded claims of the stored token, or null.
-export function currentClaims(): TokenClaims | null {
-  const token = getToken();
-  return token ? decodeToken() : null;
-}
-
-// currentRole returns the role from the stored token ('admin' | 'user'), or null.
-export function currentRole(): string | null {
-  return currentClaims()?.role ?? null;
-}
-
-export function isAdmin(): boolean {
-  return currentRole() === "admin";
-}
+// export function currentClaims(): TokenClaims | null {
+//   const token = getToken();
+//   return token ? decodeToken() : null;
+// }
+//
+// // currentRole returns the role from the stored token ('admin' | 'user'), or null.
+// export function currentRole(): string | null {
+//   return currentClaims()?.role ?? null;
+// }
+//
+// export function isAdmin(): boolean {
+//   return currentRole() === "admin";
+// }

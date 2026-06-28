@@ -76,11 +76,10 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex  flex-col bg-gray-50">
+    <div className="flex  flex-col bg-gray-50 ">
       <div className="flex items-center gap-4 border-b border-gray-100 bg-white px-6 py-4">
-        <Button onClick={() => navigate({ to: '/forms' })}>← Back</Button>
-        <div>
-          <h1 className="text-lg font-semibold">{formQuery.data?.name}</h1>
+        <div >
+          <h1 className="text-3xl  font-bold mb-2">{formQuery.data?.name}</h1>
           <p className="text-sm text-gray-500">
             Editing creates a new version. Past responses stay pinned to the
             version that produced them.
