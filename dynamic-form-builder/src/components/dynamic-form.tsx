@@ -41,8 +41,8 @@ export function renderWidget(prop: FieldSchema) {
     case 'number':
       return (
         <InputNumber
-          min={prop.minimum}
-          max={prop.maximum}
+          // min={prop.minimum}
+          // max={prop.maximum}
           style={{ width: '100%' }}
         />
       )
@@ -71,7 +71,7 @@ function rulesFor(
   const rules: Rule[] = []
 
   if (required.includes(name)) {
-    rules.push({ required: true, message: `${label} is required` })
+    rules.push({ required: true, message: 'This question is required' })
   }
   if (prop.type === 'string') {
     if (prop.minLength != null)
@@ -94,7 +94,14 @@ function rulesFor(
         min: prop.minimum,
         message: `${label} must be ≥ ${prop.minimum}`,
       })
+    if (prop.maximum != null)
+      rules.push({
+        type: 'number',
+        max: prop.maximum,
+        message: `${label} must be ≤ ${prop.maximum}`,
+      })
   }
+
 
   if (prop.type === 'array') {
     // "required" on an array should mean "pick at least one", not just
@@ -177,6 +184,7 @@ export function DynamicForm({
           <Form.Item
             key={name}
             name={name}
+            validateDebounce={500}
             label={prop['x-label'] ?? name}
             extra={prop['x-description']}
             rules={rulesFor(name, prop, required)}

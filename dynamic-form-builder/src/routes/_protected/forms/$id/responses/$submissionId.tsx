@@ -29,12 +29,11 @@ function RouteComponent() {
 
   if (submission.isLoading || version.isLoading) return <Spin />
   if (submission.error || version.error)
-    return <Alert type="error" message="Could not load this response" showIcon />
+    return <Alert type="error" title="Could not load this response" showIcon />
   if (!submission.data || !version.data) return null
 
   return (
-    <div style={{ maxWidth: 720, margin: '0 auto' }}>
-
+    <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
       <SubmittedForm
         version={version.data}
         answers={submission.data.data}

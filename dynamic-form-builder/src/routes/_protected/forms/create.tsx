@@ -25,6 +25,8 @@ function RouteComponent() {
       queryClient.invalidateQueries({ queryKey: ['forms'] })
       toast.success('Form created')
       navigate({ to: '/forms/$id', params: { id: form.id } })
+      // window.open(`/f/${form.id}`, '_blank', 'noopener,noreferrer')
+      // navigate({ to: '/forms/$id', params: { id: form.id } })
     },
     onError: (err) =>
       toast.error(err instanceof ApiError ? err.message : 'Could not create form'),

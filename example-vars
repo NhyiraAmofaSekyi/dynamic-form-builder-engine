@@ -5,7 +5,6 @@ JWT_SECRET=60376webir23b2hb3237hudeho32uhr3287r38
 HOST=localhost
 SEED_TEST_PASSWORD=3y03hrur0832g2843
 
-
 # Port overrides (optional — omit all four to use 8080/3000 defaults)
 VITE_API_BASE_URL=http://localhost:9090/api/v1
 WEB_PORT=5173

@@ -5,7 +5,9 @@ import type { ColumnsType } from 'antd/es/table'
 import type { Form } from '#/types/schema'
 import { ApiError } from '#/lib/axios.ts'
 import { listForms } from '#/services/form.ts'
-import {ClipboardPlus, ExternalLink} from 'lucide-react'
+import {ClipboardPlus, ExternalLink, LinkIcon} from 'lucide-react'
+import {useState} from "react";
+import {toast} from "sonner";
 
 export const Route = createFileRoute('/_protected/forms/')({
   component: FormsPage,
@@ -13,9 +15,11 @@ export const Route = createFileRoute('/_protected/forms/')({
 
 function FormsPage() {
   const navigate = useNavigate()
+  const [page, setPage] = useState(1)
+  const pageSize = 20
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['forms'],
+    queryKey: ['forms', page],
     queryFn: () => listForms(),
   })
 
@@ -67,6 +71,21 @@ function FormsPage() {
           <Button
             size="small"
             type="text"
+            icon={<LinkIcon className="h-3.5 w-3.5" />}
+            disabled={!form.currentVersionId}
+            className="text-lagoon-500 hover:bg-lagoon-500/10"
+            onClick={(e) => {
+              e.stopPropagation()
+              const url = `${window.location.origin}/f/${form.id}`
+              navigator.clipboard.writeText(url)
+              toast.success('Link copied')
+            }}
+          >
+            Copy link
+          </Button>
+          <Button
+            size="small"
+            type="text"
             icon={<ExternalLink className="h-3.5 w-3.5" />}
             disabled={!form.currentVersionId}
             className="text-lagoon-500 hover:bg-lagoon-500/10"
@@ -88,6 +107,8 @@ function FormsPage() {
           >
             Responses
           </Button>
+
+
         </Space>
       ),
     },
@@ -107,7 +128,7 @@ function FormsPage() {
           type="error"
           showIcon
           className="mb-4"
-          message={error instanceof ApiError ? error.message : 'Failed to load forms'}
+          title={error instanceof ApiError ? error.message : 'Failed to load forms'}
         />
       )}
 
@@ -124,7 +145,13 @@ function FormsPage() {
           onClick: () => navigate({ to: '/forms/$id', params: { id: form.id } }),
           className: 'cursor-pointer',
         })}
-        pagination={false}
+        pagination={{
+          current: data?.page ?? page,
+          pageSize: data?.page_size ?? pageSize,
+          total: data?.total_items ?? 0,
+          showSizeChanger: false,
+          onChange: (nextPage) => setPage(nextPage),
+        }}
       />
     </div>
   )

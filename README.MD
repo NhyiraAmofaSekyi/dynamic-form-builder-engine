@@ -85,10 +85,14 @@ Run with: `go test ./...`
 
 ## Trade-offs & what I'd add with more time
 
-- **Strict JSON Schema spec compliance** — given more time I'd prefer to handle this properly, which means taking on the complexity of multiple JSON objects per form version (separating the rendering metadata from the validation schema rather than extending the spec with `x-` properties).
-- **Version naming and diffs** — naming versions and visualising the differences between form versions, so editors can see what changed between v1 and v2.
-- **No drag-and-drop designer** — fields are added and reordered via buttons rather than drag-and-drop. Not required by the assessment, but a nicer building experience.
-- **Caching compiled schemas** — schemas are currently compiled per request; caching the compiled validator would cut redundant work on hot paths.
+- **Strict JSON Schema spec compliance** — I extended the spec with `x-` properties (`x-widget`, `x-label`, etc.) to keep rendering metadata next to the validation schema in a single document. The trade-off is that the stored schemas aren't strictly spec-compliant, and the validator has to be told to ignore those properties. With more time I'd evaluate separating rendering metadata from the validation schema into distinct objects per version — more correct, at the cost of more complexity.
+- **Version naming and diffs** — versions are currently identified by id and timestamp. I'd add human-friendly version labels and a visual diff between versions, so an editor can see exactly what changed between v1 and v2.
+- **No drag-and-drop designer** — fields are added and reordered with buttons rather than drag-and-drop. Not required by the assessment, but a smoother building experience.
+- **Richer submission views** — responses render against their pinned version, but I'd add filtering and search across submissions, and honour custom boolean labels in the read-only view rather than defaulting to Yes/No.
+
+## Scaling in production
+
+- **Cache compiled schemas** — each request currently compiles the JSON Schema before validating. In production I'd cache the compiled validator keyed by `form_version_id` (versions are immutable, so the cache never needs invalidating), removing redundant compilation on hot submit paths.
 
 ## AI tools
 

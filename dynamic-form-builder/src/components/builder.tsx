@@ -298,12 +298,7 @@ export function Builder({
             Clear
           </Button>
         </div>
-
-
-
       </div>
-
-
 
 
       {/* ---------------- RIGHT: PREVIEW ---------------- */}

@@ -9,6 +9,7 @@ import {ApiError} from "#/lib/axios.ts";
 import {schemaToFields} from "#/services/fields.ts";
 import {createVersion, getCurrentVersion, getForm} from "#/services/form.ts";
 import {toast} from "sonner";
+import {ExternalLink, LinkIcon} from "lucide-react";
 
 export const Route = createFileRoute('/_protected/forms/$id/')({
   component: RouteComponent,
@@ -77,14 +78,31 @@ function RouteComponent() {
 
   return (
     <div className="flex  flex-col bg-gray-50 ">
-      <div className="flex items-center gap-4 border-b border-gray-100 bg-white px-6 py-4">
-        <div >
-          <h1 className="text-3xl  font-bold mb-2">{formQuery.data?.name}</h1>
-          <p className="text-sm text-gray-500">
-            Editing creates a new version. Past responses stay pinned to the
-            version that produced them.
-          </p>
+      <div className="border-b border-gray-100 bg-white px-4 py-4 sm:px-6">
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-2xl font-bold sm:text-3xl">{formQuery.data?.name}</h1>
+
+          <button
+            onClick={() => {
+              const url = `${window.location.origin}/f/${id}`
+              navigator.clipboard.writeText(url)
+              toast.success('Link copied')
+            }}
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-lagoon-500/20 bg-lagoon-400/10 px-4 py-1 text-xs font-medium text-lagoon-600 transition hover:bg-lagoon-400/20"
+          >
+      <span className="relative flex h-2.5 w-2.5">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lagoon-400 opacity-75" />
+        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-lagoon-500" />
+      </span>
+            Copy link
+            <LinkIcon className="h-3.5 w-3.5" />
+          </button>
         </div>
+
+        <p className="mt-2 text-sm text-gray-500">
+          Editing creates a new version. Past responses stay pinned to the
+          version that produced them.
+        </p>
       </div>
 
       <div className="flex-1 overflow-hidden">
