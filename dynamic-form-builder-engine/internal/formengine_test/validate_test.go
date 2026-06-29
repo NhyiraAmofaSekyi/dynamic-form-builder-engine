@@ -132,8 +132,7 @@ func TestValidate_Number(t *testing.T) {
 
 // ── date: string, format:date ────────────────────────────────────────
 //
-// ⚠ CHANGE-POINT: your Compile uses a bare NewCompiler(), which does NOT
-// assert "format" (it's annotation-only by default in JSON Schema 2020-12).
+// assert "format" 
 // As-is, "malformed date" will PASS validation and this subtest will fail.
 // Two ways to make it real — pick one:
 //  1. Enable format assertion on the compiler inside Compile, or
@@ -166,8 +165,7 @@ func TestValidate_Boolean(t *testing.T) {
 	})
 }
 
-// ── cross-cutting: many violations come back at once ─────────────────
-// Proves your 422 collects every failure (what toAntdErrors maps over),
+//422 collects every failure (what toAntdErrors maps over),
 // rather than bailing on the first.
 
 func TestValidate_MultipleErrors(t *testing.T) {

@@ -1,15 +1,11 @@
 -- Dynamic Form Builder Engine — initial schema.
 -- Requires PostgreSQL 18+ (native uuidv7()).
 
--- =====================
--- ENUM TYPES
--- =====================
+
 CREATE TYPE user_role AS ENUM ('admin', 'user');
 CREATE TYPE submission_status AS ENUM ('draft', 'submitted');
 
--- =====================
--- updated_at trigger
--- =====================
+
 CREATE OR REPLACE FUNCTION set_updated_at() RETURNS trigger AS $$
 BEGIN
   NEW.updated_at = now();
@@ -17,9 +13,7 @@ RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- =====================
--- users
--- =====================
+
 CREATE TABLE users (
                        id            uuid PRIMARY KEY DEFAULT uuidv7(),
                        email         text NOT NULL,
@@ -58,9 +52,7 @@ CREATE TRIGGER forms_set_updated_at
     BEFORE UPDATE ON forms
     FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
--- =====================
--- form_versions (append-only, immutable)
--- =====================
+
 CREATE TABLE form_versions (
                                id                  uuid PRIMARY KEY DEFAULT uuidv7(),
                                form_id             uuid NOT NULL REFERENCES forms(id),
@@ -75,14 +67,11 @@ CREATE TABLE form_versions (
 
 CREATE INDEX form_versions_form_id_idx ON form_versions (form_id);
 
--- circular FK resolved after both tables exist
 ALTER TABLE forms
     ADD CONSTRAINT forms_current_version_fk
         FOREIGN KEY (current_version_id) REFERENCES form_versions(id);
 
--- =====================
--- form_submissions (pinned to the validating version)
--- =====================
+
 CREATE TABLE form_submissions (
                                   id              uuid PRIMARY KEY DEFAULT uuidv7(),
                                   form_id         uuid NOT NULL REFERENCES forms(id),
