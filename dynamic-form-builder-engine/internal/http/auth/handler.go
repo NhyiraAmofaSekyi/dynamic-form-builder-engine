@@ -84,8 +84,6 @@ func (h *Handler) SignIn(c *gin.Context) {
 
 // Register is omitted here for brevity — it mirrors users.Create (hash + insert
 // with role 'user'), then optionally issues a token so the user is logged in
-// immediately. Wire it to the same CreateUser query.
 func (h *Handler) Register(c *gin.Context) {
-	// ... same as users.Create, then Issue() a token and return authResponse ...
 	response.Internal(c, "not implemented", errors.New("register not wired"))
 }

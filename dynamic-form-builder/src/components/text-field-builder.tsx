@@ -13,7 +13,6 @@ export function TextFieldBuilderEditor({ value, onChange }: Props) {
   const update = (patch: Partial<TextFieldBuilder>) =>
     onChange({ ...value, ...patch });
 
-  // Label drives the key automatically; the key is never shown to the user.
   const handleLabel = (label: string) => {
     const trimmed = label.trim();
     const name = trimmed === "" ? "" : slugify(label) || value.name;
@@ -25,8 +24,7 @@ export function TextFieldBuilderEditor({ value, onChange }: Props) {
     value.maxLength != null &&
     value.minLength > value.maxLength;
 
-  // Open Advanced if it already holds values (e.g. editing an existing field),
-  // otherwise start collapsed.
+
   const hasAdvanced = value.minLength != null || value.maxLength != null;
   const [advancedOpen, setAdvancedOpen] = useState(hasAdvanced);
 

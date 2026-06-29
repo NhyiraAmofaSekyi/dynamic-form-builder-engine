@@ -14,13 +14,14 @@ export function DateFieldBuilderEditor({ value, onChange }: Props) {
   const update = (patch: Partial<DateFieldBuilder>) =>
     onChange({ ...value, ...patch });
 
-  // Label drives the key automatically; the key is never shown to the user.
+  //todo:add this to common
   const handleLabel = (label: string) => {
     const trimmed = label.trim();
     const name = trimmed === "" ? "" : slugify(label) || value.name;
     update({ label, name });
   };
 
+  //todo:left out
   // minDate must not be after maxDate. Dates are stored as "YYYY-MM-DD" strings,
   // which compare correctly lexicographically — but we compare via dayjs to be safe.
   const rangeInvalid =

@@ -1,16 +1,10 @@
 
-// -----------------------------
-// Shared primitives
-// -----------------------------
 
 export interface Option {
   value: string | boolean | number;
   label: string;
 }
 
-// -----------------------------
-// Base field
-// -----------------------------
 
 export interface BaseFieldBuilder {
   name: string;
@@ -19,20 +13,10 @@ export interface BaseFieldBuilder {
   description?: string;
   placeholder?: string;
 }
-
-// -----------------------------
-// Shared text-like constraints
-// (used by text + textarea)
-// -----------------------------
-
 export interface TextConstraints {
   minLength?: number;
   maxLength?: number;
 }
-
-// -----------------------------
-// Field types
-// -----------------------------
 
 export interface TextFieldBuilder extends BaseFieldBuilder, TextConstraints {
   type: "text" | "textarea";
@@ -69,9 +53,6 @@ export interface BooleanFieldBuilder extends BaseFieldBuilder {
   }[];
 }
 
-// -----------------------------
-//  types
-// -----------------------------
 
 export type FormFieldBuilder =
   | TextFieldBuilder
@@ -81,9 +62,6 @@ export type FormFieldBuilder =
   | DateFieldBuilder
   | BooleanFieldBuilder;
 
-// -----------------------------
-// Form container
-// -----------------------------
 
 export interface FormBuilder {
   fields: FormFieldBuilder[];

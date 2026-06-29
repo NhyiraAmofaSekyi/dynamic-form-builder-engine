@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import type {FieldSchema, FieldValue, FormSchema, Response} from "#/types/schema.ts";
 
 
-// ---- 1. Widget inference fallback (used only when x-widget is absent) ----
+// ---- 1. Widget inference fallback  ----
 export function inferWidget(prop: FieldSchema): string {
   if (prop.enum) return 'select'
   if (prop.format === 'date') return 'date'
@@ -13,7 +13,6 @@ export function inferWidget(prop: FieldSchema): string {
 }
 
 // ---- 2. THE WIDGET MAPPER — the heart of the renderer --------------------
-// Add new field types here: one case per x-widget value.
 export function renderWidget(prop: FieldSchema) {
   const widget = prop['x-widget'] ?? inferWidget(prop)
   switch (widget) {
@@ -62,7 +61,7 @@ export function renderWidget(prop: FieldSchema) {
   }
 }
 
-// ---- 3. Derive antd validation rules from schema keywords ----------------
+// ---- 3. Derive antd form validation rules from schema keywords ----------------
 function rulesFor(
   name: string,
   prop: FieldSchema,

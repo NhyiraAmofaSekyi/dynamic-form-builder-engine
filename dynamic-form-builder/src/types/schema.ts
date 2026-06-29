@@ -1,4 +1,3 @@
-// ---- Types describing the shape of our stored schema --------------------
 export interface FieldSchema  {
   type: string
   items?: FieldSchema

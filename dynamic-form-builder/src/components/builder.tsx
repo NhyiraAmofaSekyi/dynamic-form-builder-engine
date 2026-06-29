@@ -72,9 +72,7 @@ function typeLabel(type: FieldType): string {
 }
 
 type BuilderProps = {
-  // Seed the builder with existing fields (update mode). Empty => create mode.
   initialFields?: FormFieldBuilder[];
-  // What the primary button does with the derived schema. Defaults to logging.
   onSave?: (schema: FormSchema) => void;
   saveLabel?: string;
   saving?: boolean;
@@ -317,16 +315,6 @@ export function Builder({
           </p>
         </div>
 
-        {/*<div className=" rounded-lg  border-gray-100 bg-white p-6 shadow-2xs">*/}
-        {/*  {hasFields ? (*/}
-        {/*    <DynamicForm form={form} schema={schema} onSubmit={(data) => console.log("submit:", data)} />*/}
-        {/*  ) : (*/}
-        {/*    <div className="flex flex-col items-center justify-center py-12 text-center">*/}
-        {/*      <Clipboard strokeWidth={0.8} className="mb-4 h-12 w-12 text-gray-300" />*/}
-        {/*      <p className="mt-1 text-sm text-gray-300">Add a field to preview the form.</p>*/}
-        {/*    </div>*/}
-        {/*  )}*/}
-        {/*</div>*/}
         {previewContent}
 
       </div>

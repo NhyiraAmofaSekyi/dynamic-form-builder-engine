@@ -72,7 +72,6 @@ export function SubmittedForm({ version, answers }: SubmittedFormProps) {
             </Form.Item>
           )
         })}
-        {/* no submit button — view only */}
       </Form>
     </div>
   )

@@ -66,7 +66,7 @@ export function OptionsEditorNoLabel({ value, onChange }: Props) {
             placeholder="Option label"
             value={opt.label}
             onChange={(e) => handleLabel(i, e.target.value)}
-            className="flex-1"
+            // className="flex-1"
           />
 
           {/* value is derived from the label; shown read-only for reference */}

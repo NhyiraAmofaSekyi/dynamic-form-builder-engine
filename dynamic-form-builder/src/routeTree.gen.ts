@@ -11,10 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TestIndexRouteImport } from './routes/test/index'
-import { Route as TestResponseRouteImport } from './routes/test/response'
-import { Route as TestEditRouteImport } from './routes/test/edit'
-import { Route as TestCreateRouteImport } from './routes/test/create'
 import { Route as FIdRouteImport } from './routes/f/$id'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as ProtectedResponsesIndexRouteImport } from './routes/_protected/responses/index'
@@ -31,26 +27,6 @@ const ProtectedRoute = ProtectedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestIndexRoute = TestIndexRouteImport.update({
-  id: '/test/',
-  path: '/test/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestResponseRoute = TestResponseRouteImport.update({
-  id: '/test/response',
-  path: '/test/response',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestEditRoute = TestEditRouteImport.update({
-  id: '/test/edit',
-  path: '/test/edit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TestCreateRoute = TestCreateRouteImport.update({
-  id: '/test/create',
-  path: '/test/create',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FIdRoute = FIdRouteImport.update({
@@ -100,10 +76,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/f/$id': typeof FIdRoute
-  '/test/create': typeof TestCreateRoute
-  '/test/edit': typeof TestEditRoute
-  '/test/response': typeof TestResponseRoute
-  '/test/': typeof TestIndexRoute
   '/forms/create': typeof ProtectedFormsCreateRoute
   '/forms/': typeof ProtectedFormsIndexRoute
   '/responses/': typeof ProtectedResponsesIndexRoute
@@ -115,10 +87,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/f/$id': typeof FIdRoute
-  '/test/create': typeof TestCreateRoute
-  '/test/edit': typeof TestEditRoute
-  '/test/response': typeof TestResponseRoute
-  '/test': typeof TestIndexRoute
   '/forms/create': typeof ProtectedFormsCreateRoute
   '/forms': typeof ProtectedFormsIndexRoute
   '/responses': typeof ProtectedResponsesIndexRoute
@@ -132,10 +100,6 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
   '/f/$id': typeof FIdRoute
-  '/test/create': typeof TestCreateRoute
-  '/test/edit': typeof TestEditRoute
-  '/test/response': typeof TestResponseRoute
-  '/test/': typeof TestIndexRoute
   '/_protected/forms/create': typeof ProtectedFormsCreateRoute
   '/_protected/forms/': typeof ProtectedFormsIndexRoute
   '/_protected/responses/': typeof ProtectedResponsesIndexRoute
@@ -149,10 +113,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/sign-in'
     | '/f/$id'
-    | '/test/create'
-    | '/test/edit'
-    | '/test/response'
-    | '/test/'
     | '/forms/create'
     | '/forms/'
     | '/responses/'
@@ -164,10 +124,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/sign-in'
     | '/f/$id'
-    | '/test/create'
-    | '/test/edit'
-    | '/test/response'
-    | '/test'
     | '/forms/create'
     | '/forms'
     | '/responses'
@@ -180,10 +136,6 @@ export interface FileRouteTypes {
     | '/_protected'
     | '/auth/sign-in'
     | '/f/$id'
-    | '/test/create'
-    | '/test/edit'
-    | '/test/response'
-    | '/test/'
     | '/_protected/forms/create'
     | '/_protected/forms/'
     | '/_protected/responses/'
@@ -197,10 +149,6 @@ export interface RootRouteChildren {
   ProtectedRoute: typeof ProtectedRouteWithChildren
   AuthSignInRoute: typeof AuthSignInRoute
   FIdRoute: typeof FIdRoute
-  TestCreateRoute: typeof TestCreateRoute
-  TestEditRoute: typeof TestEditRoute
-  TestResponseRoute: typeof TestResponseRoute
-  TestIndexRoute: typeof TestIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -217,34 +165,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/test/': {
-      id: '/test/'
-      path: '/test'
-      fullPath: '/test/'
-      preLoaderRoute: typeof TestIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/test/response': {
-      id: '/test/response'
-      path: '/test/response'
-      fullPath: '/test/response'
-      preLoaderRoute: typeof TestResponseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/test/edit': {
-      id: '/test/edit'
-      path: '/test/edit'
-      fullPath: '/test/edit'
-      preLoaderRoute: typeof TestEditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/test/create': {
-      id: '/test/create'
-      path: '/test/create'
-      fullPath: '/test/create'
-      preLoaderRoute: typeof TestCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/f/$id': {
@@ -334,10 +254,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProtectedRoute: ProtectedRouteWithChildren,
   AuthSignInRoute: AuthSignInRoute,
   FIdRoute: FIdRoute,
-  TestCreateRoute: TestCreateRoute,
-  TestEditRoute: TestEditRoute,
-  TestResponseRoute: TestResponseRoute,
-  TestIndexRoute: TestIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

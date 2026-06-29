@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Button, Form, Input, message } from 'antd'
 import {signIn} from "#/services/sign-in.ts";
 import {ApiError} from "#/lib/axios.ts";
+import {toast} from "sonner";
 
 export const Route = createFileRoute('/auth/sign-in')({
   component: SignInPage,
@@ -20,7 +21,7 @@ function SignInPage() {
     mutationFn: signIn,
     onSuccess: () => navigate({ to: '/forms' }),
     onError: (err) =>
-      message.error(err instanceof ApiError ? err.message : 'Something went wrong.'),
+      toast.error(err instanceof ApiError ? err.message : 'Something went wrong.'),
   })
 
   return (
@@ -31,7 +32,12 @@ function SignInPage() {
 
         <Form
           layout="vertical"
-          onFinish={(values: SignInValues) => signInMutation.mutate(values)}
+          onFinish={(values: SignInValues) =>
+            signInMutation.mutate({
+              email: values.email.trim(),
+              password: values.password,
+            })
+          }
           disabled={signInMutation.isPending}
           requiredMark={false}
         >

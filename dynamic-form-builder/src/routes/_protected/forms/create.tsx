@@ -1,11 +1,12 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { Input, message } from 'antd'
+import { Input } from 'antd'
 import { Builder } from '#/components/builder.tsx'
 import type { FormSchema } from '#/types/schema'
 import {createForm} from "#/services/form.ts";
 import {ApiError} from "#/lib/axios.ts";
+import {toast} from "sonner";
 
 export const Route = createFileRoute('/_protected/forms/create')({
   component: RouteComponent,
@@ -15,25 +16,23 @@ function RouteComponent() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  // name + description live here — the Builder only produces the schema.
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
   const createMutation = useMutation({
     mutationFn: createForm,
-    onSuccess: (form) => {
+    onSuccess: async  (form) =>  {
       queryClient.invalidateQueries({ queryKey: ['forms'] })
-      message.success('Form created')
+      toast.success('Form created')
       navigate({ to: '/forms/$id', params: { id: form.id } })
     },
     onError: (err) =>
-      message.error(err instanceof ApiError ? err.message : 'Could not create form'),
+      toast.error(err instanceof ApiError ? err.message : 'Could not create form'),
   })
 
-  // Builder hands us the derived schema; we combine it with name/description.
-  const handleSave = (schema: FormSchema) => {
+  const  handleSave =  (schema: FormSchema) => {
     if (!name.trim()) {
-      message.warning('Please enter a form name')
+      toast.warning('Please enter a form name')
       return
     }
     createMutation.mutate({

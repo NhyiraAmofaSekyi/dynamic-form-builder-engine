@@ -5,6 +5,7 @@ function humanize(key: string): string {
   return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+//TODO:VALIDATE
 // Format any FieldValue for read-only display.
 function formatValue(v: FieldValue | undefined): string {
   if (v == null || v === "") return "—";
@@ -24,7 +25,6 @@ export function ResponseView({ responses, order }: Props) {
     return <p className="text-sm text-neutral-400">No responses yet.</p>;
   }
 
-  // Walk x-order if provided, else collect keys in first-seen order.
   const keys =
     order ?? Array.from(new Set(responses.flatMap((r) => Object.keys(r))));
 

@@ -19,7 +19,6 @@ function RouteComponent() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  // load the form (for name) and its current version (for the schema to edit).
   const formQuery = useQuery({
     queryKey: ['forms', id],
     queryFn: () => getForm(id),
@@ -29,7 +28,7 @@ function RouteComponent() {
     queryFn: () => getCurrentVersion(id),
   })
 
-  // convert the stored schema -> builder fields (seed the editor).
+  // convert the stored schema -> builder fields
   const initialFields = useMemo(() => {
     if (!versionQuery.data) return []
     return schemaToFields(versionQuery.data.schemaJson)

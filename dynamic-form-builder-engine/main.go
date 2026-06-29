@@ -41,6 +41,10 @@ func main() {
 	defer a.Close()
 	log.Println("database connected successfully")
 
+	if err := db.SeedTestAccount(context.Background(), a.Queries); err != nil {
+		log.Fatalf("seeding test account failed: %v", err)
+	}
+
 	logger, err := zap.NewProduction()
 	if err != nil {
 		log.Fatal(err)

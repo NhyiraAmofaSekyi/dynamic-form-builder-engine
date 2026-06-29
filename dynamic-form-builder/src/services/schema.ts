@@ -16,7 +16,6 @@ export async function getExampleSchema(): Promise<FormSchema> {
 
 // POST a submission for validation.
 //
-// KEY DETAIL: a 422 ("form invalid") is an EXPECTED outcome carrying the
 // field errors — not an exception. axios throws on non-2xx by default, so we
 // whitelist 200 and 422 as non-throwing and read the body either way.
 // 400 (bad JSON) and 500 still throw, surfacing as real errors.
