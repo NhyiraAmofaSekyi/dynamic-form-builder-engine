@@ -17,12 +17,13 @@ export function renderWidget(prop: FieldSchema) {
   const widget = prop['x-widget'] ?? inferWidget(prop)
   switch (widget) {
     case 'textarea':
-      return <Input.TextArea rows={4} maxLength={prop.maxLength} showCount  placeholder={prop['x-placeholder']}/>
+      return <Input.TextArea
+        rows={4} maxLength={prop.maxLength} showCount  placeholder={prop['x-placeholder']}/>
     case 'select':
       return (
         <Select
           allowClear
-          placeholder="Select…"
+          placeholder={prop['x-placeholder']}
           options={
             prop['x-options'] ??
             prop.enum?.map((v) => ({ value: v, label: v }))
@@ -43,11 +44,12 @@ export function renderWidget(prop: FieldSchema) {
         <InputNumber
           // min={prop.minimum}
           // max={prop.maximum}
+          placeholder={prop['x-placeholder']}
           style={{ width: '100%' }}
         />
       )
     case 'date':
-      return <DatePicker style={{ width: '100%' }} />
+      return <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
     case 'checkboxes':  return <Checkbox.Group
       options={prop['x-options'] ?? prop.items?.enum?.map((v) => ({ value: v, label: v }))}
     />

@@ -15,6 +15,7 @@ import {queryClient} from "#/lib/queryClient.tsx";
 import {Toaster} from "sonner";
 import {ConfigProvider} from "antd";
 import {antdTheme} from "#/lib/antd-theme.ts";
+import NotFound from "#/components/not-found.tsx";
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -46,6 +47,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
+  notFoundComponent: NotFound,
   shellComponent: RootDocument,
 })
 
