@@ -1,42 +1,98 @@
-To run the project locally please refer to run.md
+# Dynamic Form Builder Engine
 
-ai tools use
+A configuration-driven engine that defines, validates, stores, and renders
+dynamic forms. Forms are represented as JSON Schema documents rather than
+static database tables, so new forms and fields require no schema migrations
+or redeploys.
 
-Claude model - opus 4.8
+## Running locally
 
-how
+See [run.md](./run.md) for full setup (database + API + frontend via Docker Compose).
 
-- researching example given researching standards for storing and validating json schema
-- writing endpoints based on previous specs I have provided
+## Data model
 
-All components on the front end, hooks and pages on the fron end where verified
+Three core tables:
 
-And all endpoints and functions were
-verified
+- **forms** — the identity of a form (id, name, slug, owner, pointer to its current version).
+- **form_versions** — append-only, immutable. Each row holds one JSON Schema document. A form can have many versions; the "live" one is referenced by `forms.current_version_id`.
+- **form_submissions** — user responses, each pinned to the specific `form_version_id` it was submitted against.
 
-data model choices
+### Why this shape
 
-the data models core concept is the use of a json schema for every form the form in this case is the identifier and the acually json representation of the form fields are stored on another table form versions, each form can have multiple versions but the current version is stored against the form under current version
+Editing a form never mutates an existing version — it creates a new one and
+repoints `current_version_id`. Because every submission stores the exact
+version that produced it, a stored response stays valid against the version that produced it
+configuration even after the form evolves. This is how historical integrity is
+guaranteed: a v1 submission is always read and validated against v1's schema,
+never a later version's.
 
-submissions ( responses are ) recorded agaisnt a form version rather thana from to allow them to be viewed regardless of future changes
+## Design decisions
 
-The trade-offs you made and what you would add or change with more time. • The AI tools you used and how (see the section above).
+### Rendering metadata lives in the schema
 
-Design Decisions
-the first design decision made was to store metadata required for rendering the form within teh json schema , byy doing this I have extended the spec adn the json schemas stored in tehdatabase are not fully complaint with teh spec
+Form configuration and rendering hints are stored together in one JSON Schema
+document, using `x-` prefixed properties (`x-widget`, `x-label`,
+`x-placeholder`, `x-options`, `x-order`). This extends the JSON Schema spec:
+the stored documents are intentionally not strictly spec-compliant, and the
+validator is configured to ignore these annotation properties so they don't
+cause compilation errors.
 
-As a result these addtional properties must beignored by a JSON schema parse in order to not cause errors on complation this was done so the instructions to render a from can be kept close to the schema rather than the complexity that comes with definig the validtion rules and schema of a form on one table and the rendering rules on another, another this makes the schema extensible and self defining
+The trade-off: keeping render instructions next to validation rules makes each
+schema self-describing and extensible, at the cost of strict spec purity. The
+alternative — splitting validation rules and rendering config across separate
+tables — was rejected as more complex for no real benefit at this scale.
 
-the fromemngine supports validation rules defined bhy the json schema spec for varios data types and this is testiend in the fromengine_test package
-the data types that were selected for this assesment were
+### Validation engine
 
-string
-string enums (selects and multi selects)
-numbers
-Date
-booleans
+Validation rules are defined entirely by the stored JSON Schema, never
+hardcoded in application code. The engine (`santhosh-tekuri/jsonschema` v6)
+parses and runs them dynamically at runtime. Format assertion is enabled, so
+`format: date` is enforced rather than treated as an annotation.
 
-storing submissions agaisnt form versions ensures that responses can be viewed regardless of future changes
+Supported field types: text/textarea (string), single + multi select (string
+enum / array), number, date, and boolean. Each is covered by a table-driven
+test suite in the `formengine_test` package — a passing case plus a failure
+case per constraint.
 
-on the front end forms are rendered by a dompoenent teh dyncamic form renderier which is powered by antd from input componenetsthey are rendered based on the x-widget property
-there is abuilder componenet that creates forms and for each widget type there is a builder to create and handle
+### Frontend rendering
+
+A single `DynamicForm` component renders any stored schema into antd inputs,
+choosing the widget per field from its `x-widget` property. The same renderer
+is reused read-only to display submitted responses against their pinned
+version. A separate builder component constructs schemas, with a dedicated
+editor per field type.
+
+## Error handling
+
+Validation failures return a structured 422 with per-field errors; the frontend
+maps these onto the relevant inputs. Not-found, unauthorized, and bad-request
+cases all return consistent structured responses. Authorization is enforced
+server-side on every owner-scoped route.
+
+## Testing
+
+- `formengine_test`: table-driven validation matrix across all field types.
+- <add: version-integrity test, auth test if present>
+
+Run with: `go test ./...`
+
+## Trade-offs & what I'd add with more time
+
+- <your list — e.g. ,JSON spec compliance issomething I would prefer given enough time to handle the complexity of mulitple json objects for each form version, naming versions and visualiseing diffs in form versions, no drag-and-drop designer (not required), caching of
+  compiled schemas,gap>
+
+## AI tools
+
+**Tool:** Claude (Opus 4.8)
+
+**How it was used:**
+
+- Researching standards for storing and validating forms as JSON Schema.
+- Scaffolding endpoints from specs I provided.
+- Generating the table-driven validation test suite.
+- Debugging (e.g. a golang-migrate version mismatch, CORS configuration).
+
+**What I verified myself:** Every endpoint, the validation engine behaviour,
+and all frontend components, hooks, and pages were tested and verified by me. I
+understand and can explain every part of the submission, including
+AI-generated code.
