@@ -2,6 +2,8 @@ package server
 
 import (
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/app"
@@ -52,7 +54,9 @@ func New(a *app.App) *gin.Engine {
 		"https://formbuilder.nhyiraamofasekyi.com",
 		"http://localhost:3000",
 		"http://localhost:5173",
-		"https://yourdomain.com",
+	}
+	if env := os.Getenv("CORS_ORIGINS"); env != "" {
+		allowedOrigins = strings.Split(env, ",")
 	}
 
 	router.Use(cors.New(cors.Config{
@@ -82,14 +86,9 @@ func New(a *app.App) *gin.Engine {
 
 	// api routes
 	v1 := router.Group("/api/v1")
-	//schemaStore, err := formengine2.NewStore("data/example.schema.json")
-	//if err != nil {
-	//	zap.L().Fatal("failed to load form schema", zap.Error(err))
-	//}
 
 	auth.NewHandler(a.Queries, a.Cfg.JWTSecret).RegisterRoutes(v1) // /auth/login, /auth/register
 
-	//formengine2.NewHandler(schemaStore).RegisterRoutes(v1)
 	users.NewHandler(a.Queries).RegisterRoutes(v1)
 	protected := v1.Group("")
 	protected.Use(middleware.RequireAuth(a.Cfg.JWTSecret))

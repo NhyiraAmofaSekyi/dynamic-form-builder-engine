@@ -23,14 +23,15 @@ apiClient.interceptors.request.use((config) => {
   return config
 })
 
-// RESPONSE: a 401 means the token is missing/expired/invalid — clear it so the
-// app treats the user as logged out. Redirect is left to the _protected guard;
-// we only manage token state here, then re-reject so callers' catch blocks run.
+
 apiClient.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error?.response?.status === 401) {
       clearToken()
+      if (!window.location.pathname.startsWith('/auth/sign-in')) {
+        window.location.href = '/auth/sign-in'
+      }
     }
     return Promise.reject(error)
   },

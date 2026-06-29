@@ -4,11 +4,24 @@ import { Separator } from "./ui/separator";
 import AppBreadcrumb from "#/components/app-breadcrumb.tsx";
 import {Button} from "#/components/ui/button.tsx";
 import {ArrowLeft} from "lucide-react";
-import {useRouter} from "@tanstack/react-router";
+import {useNavigate, useRouter} from "@tanstack/react-router";
+import {useEffect} from "react";
+import {TOKEN_KEY} from "#/lib/auth.ts";
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === TOKEN_KEY && !e.newValue) {
+        navigate({ to: '/auth/sign-in' })
+      }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [navigate])
 
   return (
     <SidebarProvider>

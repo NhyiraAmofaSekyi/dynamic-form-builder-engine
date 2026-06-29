@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode'
 
-const TOKEN_KEY = 'accessToken'
+export const TOKEN_KEY = 'accessToken'
 
 interface JwtPayload {
   uid: string
