@@ -60,15 +60,19 @@ function fieldToSchema(field: FormFieldBuilder): FieldSchema {
         ...common,
       };
 
-    case "boolean":
+    case "boolean": {
+
+      const labels = field["x-options"] ?? [];
       return {
         type: "boolean",
         "x-widget": "radio",
-        "x-options": field["x-options"] ?? [
-          { value: "true", label: "Yes" },
-          { value: "false", label: "No" },
-        ], ...common,
+        "x-options": [
+          { value: true, label: labels[0]?.label ?? "Yes" },
+          { value: false, label: labels[1]?.label ?? "No" },
+        ],
+        ...common,
       };
+    }
 
     default: {
       // exhaustiveness guard: if a new field type is added to the union,

@@ -1,7 +1,5 @@
-# Local development compose. No Traefik, no TLS, no domains — just the three
-# services with published ports so you hit them directly at localhost.
-#   docker compose -f compose.local.yaml up --build
-
+# Local development compose.
+# Volume can be uncommented for persistence of the database.
 services:
   db:
     image: postgres:18-alpine
@@ -10,9 +8,8 @@ services:
       POSTGRES_DB: form_builder
       POSTGRES_USER: ${POSTGRES_USER:-formbuilder}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-localdevpassword}
-    volumes:
-      - pgdata:/var/lib/postgresql
-    # Published locally so you can inspect the DB with psql/a GUI if you want.
+    # volumes:
+    #   - pgdata:/var/lib/postgresql
     ports:
       - "5432:5432"
     healthcheck:
@@ -33,10 +30,13 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-formbuilder}:${POSTGRES_PASSWORD:-localdevpassword}@db:5432/form_builder?sslmode=disable
       JWT_SECRET: ${JWT_SECRET:-local-dev-secret-change-me}
       PORT: "8080"
+      #Seed Password
+      SEED_TEST_PASSWORD: ${SEED_TEST_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
     # Hit the API directly at http://localhost:8080
+    # If seed Password is not added no test account will be created. Add SEED_TEST_PASSWORD to .env file to create a test account.
     ports:
       - "8080:8080"
 
@@ -53,5 +53,5 @@ services:
     depends_on:
       - api
 
-volumes:
-  pgdata:
+# volumes:
+#   pgdata:

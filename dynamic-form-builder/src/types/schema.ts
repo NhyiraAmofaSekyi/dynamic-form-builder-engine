@@ -2,7 +2,8 @@ export interface FieldSchema  {
   type: string
   items?: FieldSchema
   format?: string
-  enum?: string[]
+  enum?: (string | number | boolean)[]
+
   minLength?: number
   maxLength?: number
   minimum?: number
