@@ -5,6 +5,13 @@ dynamic forms. Forms are represented as JSON Schema documents rather than
 static database tables, so new forms and fields require no schema migrations
 or redeploys.
 
+**Live demo:** https://formbuilder.nhyiraamofasekyi.com
+
+**Test credentials:**
+
+- Email: `test@example.com`
+- Password: `hjvqyf2jn71727781`
+
 ## Running locally
 
 See [run.md](./run.md) for full setup (database + API + frontend via Docker Compose).
