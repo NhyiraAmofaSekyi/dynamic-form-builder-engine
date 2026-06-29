@@ -78,6 +78,11 @@ Run with: `go test ./...`
 
 ## Trade-offs & what I'd add with more time
 
+- **Strict JSON Schema spec compliance** — given more time I'd prefer to handle this properly, which means taking on the complexity of multiple JSON objects per form version (separating the rendering metadata from the validation schema rather than extending the spec with `x-` properties).
+- **Version naming and diffs** — naming versions and visualising the differences between form versions, so editors can see what changed between v1 and v2.
+- **No drag-and-drop designer** — fields are added and reordered via buttons rather than drag-and-drop. Not required by the assessment, but a nicer building experience.
+- **Caching compiled schemas** — schemas are currently compiled per request; caching the compiled validator would cut redundant work on hot paths.
+
 - <your list — e.g. ,JSON spec compliance issomething I would prefer given enough time to handle the complexity of mulitple json objects for each form version, naming versions and visualiseing diffs in form versions, no drag-and-drop designer (not required), caching of
   compiled schemas,gap>
 
