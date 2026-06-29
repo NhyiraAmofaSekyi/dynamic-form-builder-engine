@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/db"
 	"net/http"
+	"strings"
 
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/db/generated"
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/http/response"
@@ -76,8 +77,9 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 
+	email := strings.ToLower(req.Email)
 	user, err := h.q.CreateUser(c.Request.Context(), generated.CreateUserParams{
-		Email:        req.Email,
+		Email:        email,
 		PasswordHash: string(hash),
 		Role:         generated.UserRoleUser,
 		FirstName:    req.FirstName,

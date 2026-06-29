@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/NhyiraAmofaSekyi/dynamic-form-builder-engine/internal/db/generated"
@@ -55,7 +56,8 @@ func (h *Handler) SignIn(c *gin.Context) {
 		return
 	}
 
-	user, err := h.q.GetUserByEmail(c.Request.Context(), req.Email)
+	email := strings.ToLower(req.Email)
+	user, err := h.q.GetUserByEmail(c.Request.Context(), email)
 	if errors.Is(err, pgx.ErrNoRows) {
 		// don't reveal whether the email exists — same message as bad password
 		response.Unauthorized(c, "invalid credentials", err.Error())
