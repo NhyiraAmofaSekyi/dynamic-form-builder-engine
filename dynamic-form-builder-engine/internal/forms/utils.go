@@ -10,7 +10,7 @@ var (
 	trimDashes  = regexp.MustCompile(`^-+|-+$`)    // leading/trailing dashes
 )
 
-// slugify turns a human name into a URL-safe slug:
+// Slugify  turns a human name into a URL-safe slug:
 //
 //	"Contact Us!" -> "contact-us"
 //	"  Q3   Survey  " -> "q3-survey"
