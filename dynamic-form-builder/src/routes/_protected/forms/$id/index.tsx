@@ -9,7 +9,7 @@ import {ApiError} from "#/lib/axios.ts";
 import {schemaToFields} from "#/services/fields.ts";
 import {createVersion, getCurrentVersion, getForm} from "#/services/form.ts";
 import {toast} from "sonner";
-import {ExternalLink, LinkIcon} from "lucide-react";
+import { LinkIcon} from "lucide-react";
 
 export const Route = createFileRoute('/_protected/forms/$id/')({
   component: RouteComponent,
