@@ -10,9 +10,6 @@ export const Route = createFileRoute('/_protected')({
 function RouteComponent() {
   const navigate = useNavigate()
 
-  // The read happens here, inside useEffect — which only runs in the browser,
-  // never during SSR. That's why getToken/isAuthenticated don't need a guard:
-  // they're never called server-side.
   useEffect(() => {
     if (!isAuthenticated()) {
       navigate({ to: '/auth/sign-in' })

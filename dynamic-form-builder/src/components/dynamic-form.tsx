@@ -42,8 +42,6 @@ export function renderWidget(prop: FieldSchema) {
     case 'number':
       return (
         <InputNumber
-          // min={prop.minimum}
-          // max={prop.maximum}
           placeholder={prop['x-placeholder']}
           style={{ width: '100%' }}
         />

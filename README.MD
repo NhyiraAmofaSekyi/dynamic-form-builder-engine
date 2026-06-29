@@ -89,6 +89,8 @@ Run with: `go test ./...`
 - **Version naming and diffs** — versions are currently identified by id and timestamp. I'd add human-friendly version labels and a visual diff between versions, so an editor can see exactly what changed between v1 and v2.
 - **No drag-and-drop designer** — fields are added and reordered with buttons rather than drag-and-drop. Not required by the assessment, but a smoother building experience.
 - **Richer submission views** — responses render against their pinned version, but I'd add filtering and search across submissions, and honour custom boolean labels in the read-only view rather than defaulting to Yes/No.
+- **Time and date-time inputs** — only plain dates (`format: date`) are supported. Time-only and combined date-time fields were left out; adding them means new widgets and the corresponding `format: time` / `format: date-time` validation.
+- **Combobox for multi-select** — multi-selects use a standard dropdown. A combobox (type-to-filter with inline search) would scale better for fields with many options.
 
 ## Scaling in production
 

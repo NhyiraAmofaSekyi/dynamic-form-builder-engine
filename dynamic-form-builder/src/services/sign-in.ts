@@ -10,9 +10,6 @@ export interface AuthResponse {
   token: string;
 }
 
-// signIn calls the backend, stores the returned JWT, and returns it. Errors are
-// normalised through handleApiError so callers get a consistent ApiError
-// (network/timeout/401/validation) instead of a raw axios error.
 export async function signIn(req: SignInRequest): Promise<AuthResponse> {
   try {
     const { data } = await apiClient.post<AuthResponse>(`/auth/sign-in`, req);

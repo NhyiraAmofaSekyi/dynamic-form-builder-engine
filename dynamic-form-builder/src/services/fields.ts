@@ -3,7 +3,6 @@ import type {
 } from "#/types/fields.ts";
 import type { FieldSchema, FormSchema } from "#/types/schema.ts";
 
-// Convert ONE field builder into its JSON Schema property (validation + x- hints).
 function fieldToSchema(field: FormFieldBuilder): FieldSchema {
   const common = {
     "x-label": field.label,
@@ -119,7 +118,7 @@ export function fieldsToSchema(fields: FormFieldBuilder[]): FormSchema {
 
 
 
-// Parse ONE schema property back into a field builder. The inverse of the
+// Parse ONE schema property back into a field builder.
 // per-field logic in fieldsToSchema.
 function propToField(name: string, prop: FieldSchema, required: boolean): FormFieldBuilder {
   const base = {
@@ -172,7 +171,6 @@ function propToField(name: string, prop: FieldSchema, required: boolean): FormFi
   return { ...base, type: "text", minLength: prop.minLength, maxLength: prop.maxLength };
 }
 
-// Turn a stored FormSchema back into an ordered list of field builders.
 // Order follows x-order when present, else the property keys.
 export function schemaToFields(schema: FormSchema): FormFieldBuilder[] {
   const props = schema.properties ?? {};

@@ -83,8 +83,6 @@ export async function getPublicForm(id: string): Promise<Form> {
   }
 }
 
-// submitResponse posts an anonymous submission. The server validates against
-// the form's current version and pins the submission to it.
 // NOTE: a 422 (validation failure) is an EXPECTED outcome here — we do NOT
 // route it through handleApiError. We let it reject so the caller can read
 // the structured field errors from the 422 body.
