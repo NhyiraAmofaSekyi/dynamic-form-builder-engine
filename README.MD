@@ -83,9 +83,6 @@ Run with: `go test ./...`
 - **No drag-and-drop designer** — fields are added and reordered via buttons rather than drag-and-drop. Not required by the assessment, but a nicer building experience.
 - **Caching compiled schemas** — schemas are currently compiled per request; caching the compiled validator would cut redundant work on hot paths.
 
-- <your list — e.g. ,JSON spec compliance issomething I would prefer given enough time to handle the complexity of mulitple json objects for each form version, naming versions and visualiseing diffs in form versions, no drag-and-drop designer (not required), caching of
-  compiled schemas,gap>
-
 ## AI tools
 
 **Tool:** Claude (Opus 4.8)
@@ -95,9 +92,6 @@ Run with: `go test ./...`
 - Researching standards for storing and validating forms as JSON Schema.
 - Scaffolding endpoints from specs I provided.
 - Generating the table-driven validation test suite.
-- Debugging (e.g. a golang-migrate version mismatch, CORS configuration).
 
 **What I verified myself:** Every endpoint, the validation engine behaviour,
-and all frontend components, hooks, and pages were tested and verified by me. I
-understand and can explain every part of the submission, including
-AI-generated code.
+and all frontend components, hooks, and pages were tested and verified by me
