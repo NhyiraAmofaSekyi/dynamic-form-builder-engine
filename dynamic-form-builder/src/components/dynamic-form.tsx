@@ -2,6 +2,7 @@ import { Form, Input, InputNumber, Select, DatePicker, Button, Radio, Checkbox }
 import type { FormInstance, Rule } from 'antd/es/form'
 import dayjs from 'dayjs'
 import type {FieldSchema, FieldValue, FormSchema, Response} from "#/types/schema.ts";
+import {toast} from "sonner";
 
 
 // ---- 1. Widget inference fallback  ----
@@ -188,14 +189,21 @@ export function DynamicForm({
 
       const widget = prop["x-widget"] ?? inferWidget(prop);
 
+
       // normalize date
       if (widget === "date" && out[name]) {
         out[name] = (out[name] as dayjs.Dayjs).format("YYYY-MM-DD");
       }
+      let val = out[name];
+      if (val == null || val === "") continue;
 
       response[name] = out[name] as FieldValue;
     }
 
+    if (Object.keys(response).length === 0) {
+      toast.warning("Please fill in at least one field before submitting");
+      return;
+    }
     onSubmit(response);
   };
 
