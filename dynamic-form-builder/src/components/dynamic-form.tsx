@@ -104,9 +104,6 @@ function rulesFor(
 
 
   if (prop.type === 'array') {
-    // "required" on an array should mean "pick at least one", not just
-    // "the key exists" — an empty [] would otherwise pass. So when required,
-    // enforce a minimum of at least 1 (or the schema's minItems if higher).
     const min = required.includes(name)
       ? Math.max(1, prop.minItems ?? 1)
       : prop.minItems
@@ -123,6 +120,33 @@ function rulesFor(
         type: 'array',
         max: prop.maxItems,
         message: `Select at most ${prop.maxItems} option${prop.maxItems > 1 ? 's' : ''}`,
+      })
+    }
+  }
+
+
+  if (prop.type === 'string' && prop.format === 'date') {
+    // ADAPT these to your builder's keys (e.g. prop['x-min-date'] / prop['x-max-date'])
+    const minDate = prop.minDate
+    const maxDate = prop.maxDate
+
+    if (minDate || maxDate) {
+      rules.push({
+        validator: (_rule, value) => {
+          if (value == null || value === '') return Promise.resolve() // required handles emptiness
+          const d = dayjs(value) // value is a dayjs object from DatePicker; dayjs() is idempotent
+          if (minDate && d.isBefore(dayjs(minDate), 'day')) {
+            return Promise.reject(
+              new Error(`${label} must be on or after ${dayjs(minDate).format('DD/MM/YYYY')}`),
+            )
+          }
+          if (maxDate && d.isAfter(dayjs(maxDate), 'day')) {
+            return Promise.reject(
+              new Error(`${label} must be on or before ${dayjs(maxDate).format('DD/MM/YYYY')}`),
+            )
+          }
+          return Promise.resolve()
+        },
       })
     }
   }

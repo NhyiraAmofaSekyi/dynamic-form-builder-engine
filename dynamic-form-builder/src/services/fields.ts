@@ -56,6 +56,8 @@ function fieldToSchema(field: FormFieldBuilder): FieldSchema {
         type: "string",
         format: "date",
         "x-widget": "date",
+        minDate: field.minDate,
+        maxDate: field.maxDate,
         ...common,
       };
 
@@ -91,7 +93,6 @@ export function fieldsToSchema(fields: FormFieldBuilder[]): FormSchema {
 
   for (const field of fields) {
     // Skip fields not ready yet (no label typed -> no key). Keeps the preview
-    // clean while the user is mid-edit.
     if (!field.name) continue;
 
     // Deduplicate keys: labels can collide, and the user can't see/override
@@ -151,7 +152,7 @@ function propToField(name: string, prop: FieldSchema, required: boolean): FormFi
     case "number":
       return { ...base, type: "number", minimum: prop.minimum, maximum: prop.maximum };
     case "date":
-      return { ...base, type: "date" };
+      return { ...base, type: "date" , minDate: prop.minDate, maxDate: prop.maxDate };
     case "radio": // boolean rendered as radio
       return { ...base, type: "boolean", "x-options": options };
   }

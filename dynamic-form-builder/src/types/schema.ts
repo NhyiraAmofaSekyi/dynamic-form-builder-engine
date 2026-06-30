@@ -11,6 +11,9 @@ export interface FieldSchema  {
   uniqueItems?: boolean
   minItems?: number
   maxItems?: number
+
+  minDate?: string;
+  maxDate?: string;
   'x-widget'?: string
   'x-label'?: string
   'x-placeholder'?: string
